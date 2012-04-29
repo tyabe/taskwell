@@ -63,6 +63,17 @@ class Taskwell < Padrino::Application
     redirect "/#{project.token}"
   end
 
+  put "/:token/tasks/:id" do
+    project = Project.find_by_token(params[:token])
+    task = project.tasks.find(params[:id])
+    task.due_date = nil
+    task.due_date = Date.today if params.key?('today')
+    task.due_date = Date.today + 1 if params.key?('tomorrow')
+    task.save
+
+    redirect "/#{project.token}"
+  end
+
   ##
   # Caching support
   #

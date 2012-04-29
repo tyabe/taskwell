@@ -13,13 +13,17 @@
   <div id="<%= type %>">
     <h2><%= {today: '今日やる', tomorrow: '明日やる', someday: 'いつかやる'}[type] %></h2>
     <% tasks.each do | task | -%>
-      <% form_for task, "/#{@project.token}/tasks/#{task.id}" do |f| %>
+      <% form_for task, "/#{@project.token}/tasks/#{task.id}", method: :put do |f| %>
         <% if type == :today -%>
           <%= f.check_box :done %>
         <% end -%>
         <%= task.name %>
         <%= link_to '×', "/#{@project.token}/tasks/#{task.id}",
                         confirm: '削除してよろしいですか？', method: :delete %>
+
+        <% unless type == :today -%><%= f.submit 'move today', name: 'today' %><% end -%>
+        <% unless type == :tomorrow -%><%= f.submit 'move tomorrow', name: 'tomorrow' %><% end -%>
+        <% unless type == :someday -%><%= f.submit 'move someday', name: 'someday' %><% end -%>
       <% end %>
     <% end -%>
   </div>

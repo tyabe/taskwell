@@ -37,6 +37,13 @@ class Taskwell < Padrino::Application
     render 'project/show'
   end
 
+  delete '/', with: :token do
+    project = Project.find_by_token(params[:token])
+    project.destroy
+
+    redirect '/'
+  end
+
   post "/:token/tasks" do
     project = Project.find_by_token(params[:token])
     new_task = project.tasks.new(params[:task])

@@ -17,7 +17,7 @@
         <% if type == :today -%>
           <%= f.check_box :done %>
         <% end -%>
-        <%= task.name %>
+        <%= task.name %><%= '[ 期限過ぎちゃいました ]' if type == :someday && task.due_date.present? %>
         <%= link_to '×', "/#{@project.token}/tasks/#{task.id}",
                         confirm: '削除してよろしいですか？', method: :delete %>
 

@@ -6,6 +6,32 @@ class Taskwell < Padrino::Application
 
   enable :sessions
 
+  get '/' do
+    render :index
+  end
+
+  get '/new' do
+    @project = Project.new
+    render 'project/new'
+  end
+
+  post '/new' do
+    @project = Project.new(params[:project])
+    if @project.save
+      flash[:notice] = 'Project was successfully created.'
+      redirect "/#{@project.token}"
+    else
+      render 'project/new'
+    end
+
+  end
+
+  get '/', with: :token do
+    @project = Project.find_by_token(params[:token])
+    render 'project/show'
+  end
+
+
   ##
   # Caching support
   #

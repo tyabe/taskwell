@@ -32,7 +32,7 @@ class Taskwell < Padrino::Application
 
     @today_tasks = @project.tasks.where(due_date: Date.today)
     @tomorrow_tasks = @project.tasks.where(due_date: Date.today + 1)
-    @someday_tasks = @project.tasks.where(due_date: nil)
+    @someday_tasks = @project.tasks.where("due_date IS NULL OR due_date < ?", Date.today)
 
     render 'project/show'
   end

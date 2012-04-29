@@ -6,6 +6,8 @@ class Project < ActiveRecord::Base
   field :token,       as: :string
   timestamps
 
+  attr_accessible :name, :description
+
   # Validations
   validates_presence_of :name
 

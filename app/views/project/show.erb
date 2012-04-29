@@ -8,8 +8,8 @@
   <%= f.submit 'いつかやる', name: 'someday' %>
 <% end %>
 
-<% [@today_tasks, @tomorrow_tasks, @someday_tasks].each do |tasks| -%>
-  <div>
+<% {today: @today_tasks, tomorrow: @tomorrow_tasks, someday: @someday_tasks}.each do |type, tasks| -%>
+  <div id="<%= type %>">
     <% tasks.each do | task | -%>
       <% form_for task, "/#{@project.token}/tasks/#{task.id}" do |f| %>
         <%= f.check_box :done %>

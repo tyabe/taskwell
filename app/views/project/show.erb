@@ -1,3 +1,4 @@
+<span><%= link_to '×', "/#{@project.token}", confirm: '削除してよろしいですか？', method: :delete %></span>
 <h1><%= @project.name %></h1>
 <p><%= @project.description %></p>
 
@@ -10,12 +11,12 @@
 
 <% {today: @today_tasks, tomorrow: @tomorrow_tasks, someday: @someday_tasks}.each do |type, tasks| -%>
   <div id="<%= type %>">
-  <h2>
-  <script>typeNameObj["<%= type %>"];</script>
-  </h2>
+    <h2><%= {today: '今日やる', tomorrow: '明日やる', someday: 'いつかやる'}[type] %></h2>
     <% tasks.each do | task | -%>
       <% form_for task, "/#{@project.token}/tasks/#{task.id}" do |f| %>
-        <%= f.check_box :done %>
+        <% if type == :today -%>
+          <%= f.check_box :done %>
+        <% end -%>
         <%= task.name %>
         <%= link_to '×', "/#{@project.token}/tasks/#{task.id}",
                         confirm: '削除してよろしいですか？', method: :delete %>

@@ -1,24 +1,19 @@
+<h1>あたらしいタスクリスト</h1>
 <% form_for @project, '/new' do |f| %>
   <% if @project.errors.any? -%>
-    <div class="alert alert-error">
-      <ul>
-        <li><%= error_messages_for :project %></li>
-      </ul>
-    </div>
+    <%= error_messages_for :project %>
   <% end -%>
 
   <div>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, placeholder: '名称を入力してください' %>
   </div>
 
   <div>
-    <%= f.label :description %>
-    <%= f.text_area :description %>
+    <%= f.text_area :description, placeholder: '説明やメモを入力してください' %>
   </div>
 
   <div>
-    <%= f.submit 'create' %>
+    <%= f.submit '作成する' %>
   </div>
 
 <% end %>

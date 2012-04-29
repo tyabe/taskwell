@@ -9,17 +9,18 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <%= stylesheet_link_tag 'application', 'bootstrap.min' %>
+    <%= stylesheet_link_tag 'application', 'bootstrap.min', 'jquery-ui' %>
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
+    <%= javascript_include_tag 'jquery', 'jquery-ujs', 'application' %>
+    <%= yield_content :head %>
   </head>
   <body data-spy="scroll" data-offset="50" screen_capture_injecte="true">
     <div class="container">
       <%= yield %>
-      <%= javascript_include_tag 'jquery', 'jquery-ujs', 'application' %>
       <%= javascript_include_tag 'underscore-1.3.1', 'backbone' %>
       <%= javascript_include_tag 'bootstrap.min' %>
     </div>

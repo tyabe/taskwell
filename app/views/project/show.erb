@@ -16,23 +16,80 @@
   <% {today: @today_tasks, tomorrow: @tomorrow_tasks, someday: @someday_tasks}.each do |type, tasks| -%>
     <div id="<%= type %>" class="span4">
       <h2><%= {today: '今日やる', tomorrow: '明日やる', someday: 'いつかやる'}[type] %></h2>
-      <% tasks.each do | task | -%>
-        <% form_for task, "/#{@project.token}/tasks/#{task.id}", method: :put do |f| %>
-          <div class='well'>
-            <%= link_to '&times;', "/#{@project.token}/tasks/#{task.id}",
-            confirm: '削除してよろしいですか？', method: :delete, class: 'close' %>
-            <div>
-              <% if type == :today -%>
-                <%= f.check_box :done %>
-              <% end -%>
-              <%= task.name %><%= '[ 期限過ぎちゃいました ]' if type == :someday && task.due_date.present? %>
-            </div>
-            <% unless type == :today -%><%= f.submit '今日やる', name: 'today' %><% end -%>
-            <% unless type == :tomorrow -%><%= f.submit '明日やる', name: 'tomorrow' %><% end -%>
-            <% unless type == :someday -%><%= f.submit 'いつかやる', name: 'someday' %><% end -%>
-          </div>
-        <% end %>
-      <% end -%>
+      <ul id="<%= type %>" class="tasks">
+        <% if tasks.present? -%>
+          <% tasks.each do | task | -%>
+            <li id="<%=task.id %>" class="ui-state-default">
+            <% form_for task, "/#{@project.token}/tasks/#{task.id}", method: :put do |f| %>
+              <%= link_to '&times;', "/#{@project.token}/tasks/#{task.id}",
+              confirm: '削除してよろしいですか？', method: :delete, class: 'close' %>
+              <div>
+                <% if type == :today -%>
+                  <%= f.check_box :done %>
+                <% end -%>
+                <%= task.name %><%= '[ 期限過ぎちゃいました ]' if type == :someday && task.due_date.present? %>
+              </div>
+              <% unless type == :today -%><%= f.submit '今日やる', name: 'today' %><% end -%>
+              <% unless type == :tomorrow -%><%= f.submit '明日やる', name: 'tomorrow' %><% end -%>
+              <% unless type == :someday -%><%= f.submit 'いつかやる', name: 'someday' %><% end -%>
+            <% end %>
+            </li>
+          <% end -%>
+        <% else -%>
+          <div class="alert alert-block">なにもありません</div>
+        <% end -%>
+      </ul>
     </div>
   <% end -%>
 <div>
+
+<% content_for :head do -%>
+<%= javascript_include_tag 'jquery-ui.min' %>
+<script>
+  <!--
+  $(function() {
+    $('.tasks').sortable({
+      placeholder: 'moving',
+      opacity: 0.7,
+      connectWith: '.tasks',
+      start: function(event, ui){
+        if($(this).children('li.ui-state-default').length <= 1) {
+          $(this).append('<div class="alert alert-block">なにもありません</div>');
+        }
+      },
+      update: function(event, ui){
+        if($(this).children('div').length > 0) {
+          $(this).children().remove('div');
+        }
+        if($(this).children('li.ui-state-default').length < 1) {
+          $(this).append('<div class="alert alert-block">なにもありません</div>');
+        }
+      }
+    });
+    $('.tasks').disableSelection();
+  });
+  // -->
+</script>
+
+<style>
+  <!--
+  .tasks {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  .tasks li {
+    margin: 0 3px 3px 3px;
+    padding: 0.3em;
+    padding-left: 1em;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: move;
+  }
+  .moving {
+    height: 4.2em;
+    border: dotted 2px #0000ff;
+  }
+  -->
+</style>
+<% end -%>

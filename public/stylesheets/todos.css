@@ -9,7 +9,7 @@ body {
 	line-height: 1.4em;
 	background: #eeeeee;
 	color: #333333;
-	width: 520px;
+	width: 800px;
 	margin: 0 auto;
 	-webkit-font-smoothing: antialiased;
 }
@@ -53,22 +53,6 @@ body {
 	box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
 }
 
-#todoapp textarea {
-	width: 466px;
-	font-size: 18px;
-	font-family: inherit;
-	line-height: 1.4em;
-	border: 0;
-	outline: none;
-	padding: 6px;
-	border: 1px solid #999999;
-	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
-	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
-	-ms-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
-	-o-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
-	box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
-}
-
 #todoapp input::-webkit-input-placeholder {
 	font-style: italic;
 }
@@ -76,11 +60,34 @@ body {
 #main {
 	display: none;
 }
+#newtodo {
+	display: block;
+	width: 420px;
+}
 
 #todo-list {
 	margin: 10px 0;
+	display:block;
 	padding: 0;
 	list-style: none;
+	//border: 1px solid #000000;
+}
+
+#today {
+	float:left;
+	width: 200px;
+	padding: 13px 15px 14px 20px;
+	
+}
+#tomorrow {
+	float:left;
+	width: 200px;
+	padding: 13px 15px 14px 20px;
+}
+#someday {
+	float:left;
+	width: 200px;
+	padding: 13px 15px 14px 20px;
 }
 
 #todo-list li {

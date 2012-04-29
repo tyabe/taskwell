@@ -11,6 +11,7 @@
 
 <% {today: @today_tasks, tomorrow: @tomorrow_tasks, someday: @someday_tasks}.each do |type, tasks| -%>
   <div id="<%= type %>">
+    <h2><%= {today: '今日やる', tomorrow: '明日やる', someday: 'いつかやる'}[type] %></h2>
     <% tasks.each do | task | -%>
       <% form_for task, "/#{@project.token}/tasks/#{task.id}" do |f| %>
         <% if type == :today -%>

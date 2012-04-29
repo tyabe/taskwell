@@ -1,8 +1,13 @@
 class Project < ActiveRecord::Base
 
   # Fields
-  field :token, as: :string
+  field :name,        as: :string
+  field :description, as: :text
+  field :token,       as: :string
   timestamps
+
+  # Validations
+  validates_presence_of :name
 
   # Relations
   has_many :tasks

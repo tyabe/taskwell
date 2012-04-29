@@ -12,7 +12,9 @@
   <div id="<%= type %>">
     <% tasks.each do | task | -%>
       <% form_for task, "/#{@project.token}/tasks/#{task.id}" do |f| %>
-        <%= f.check_box :done %>
+        <% if type == :today -%>
+          <%= f.check_box :done %>
+        <% end -%>
         <%= task.name %>
         <%= link_to '×', "/#{@project.token}/tasks/#{task.id}",
                         confirm: '削除してよろしいですか？', method: :delete %>

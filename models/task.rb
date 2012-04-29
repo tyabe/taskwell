@@ -8,4 +8,7 @@ class Task < ActiveRecord::Base
   # Validations
   validates_presence_of :name
 
+  # Relations
+  belongs_to :project
+
 end

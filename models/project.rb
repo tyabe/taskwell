@@ -4,6 +4,9 @@ class Project < ActiveRecord::Base
   field :token, as: :string
   timestamps
 
+  # Relations
+  has_many :tasks
+
   before_create :generate_token
 
   private

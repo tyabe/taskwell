@@ -42,7 +42,7 @@ class Taskwell < Padrino::Application
     new_task = project.tasks.new(params[:task])
     new_task.due_date = nil
     new_task.due_date = Date.today if params.key?('today')
-    new_task.due_date = Date.today +1 if params.key?('tomorrow')
+    new_task.due_date = Date.today + 1 if params.key?('tomorrow')
     new_task.save
 
     redirect "/#{project.token}"

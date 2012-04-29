@@ -1,0 +1,7 @@
+ja:
+  models:
+    project:
+      name: プロジェクト
+      attributes:
+        name: 名称
+        description: 説明

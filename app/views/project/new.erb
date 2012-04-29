@@ -1,10 +1,6 @@
 <% form_for @project, '/new' do |f| %>
   <% if @project.errors.any? -%>
-    <div class="alert alert-error">
-      <ul>
-        <li><%= error_messages_for :project %></li>
-      </ul>
-    </div>
+    <%= error_messages_for :project %>
   <% end -%>
 
   <div>

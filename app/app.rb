@@ -28,9 +28,33 @@ class Taskwell < Padrino::Application
 
   get '/', with: :token do
     @project = Project.find_by_token(params[:token])
+    @new_task = @project.tasks.new
+
+    @today_tasks = @project.tasks.where(due_date: Date.today)
+    @tomorrow_tasks = @project.tasks.where(due_date: Date.today + 1)
+    @someday_tasks = @project.tasks.where(due_date: nil)
+
     render 'project/show'
   end
 
+  post "/:token/tasks" do
+    project = Project.find_by_token(params[:token])
+    new_task = project.tasks.new(params[:task])
+    new_task.due_date = nil
+    new_task.due_date = Date.today if params.key?('today')
+    new_task.due_date = Date.today if params.key?('tomorrow')
+    new_task.save
+
+    redirect "/#{project.token}"
+  end
+
+  delete "/:token/tasks/:id" do
+    project = Project.find_by_token(params[:token])
+    task = project.tasks.find(params[:id])
+    task.destroy
+
+    redirect "/#{project.token}"
+  end
 
   ##
   # Caching support

@@ -1,34 +1,38 @@
-<span><%= link_to '×', "/#{@project.token}", confirm: '削除してよろしいですか？', method: :delete %></span>
-<h1><%= @project.name %></h1>
-<p><%= @project.description %></p>
-
-<div id="newtodo">
-<% form_for @new_task, "/#{@project.token}/tasks" do |f| %>
-  <%= f.text_field :name %>
-  <%= f.submit '今日やる', name: 'today' %>
-  <%= f.submit '明日やる', name: 'tomorrow' %>
-  <%= f.submit 'いつかやる', name: 'someday' %>
-<% end %>
+<div class="well">
+  <%= link_to '&times;', "/#{@project.token}", confirm: '削除してよろしいですか？', method: :delete, class: 'close' %>
+  <h1><%= @project.name %></h1>
+  <p><%= @project.description %></p>
+  <% form_for @new_task, "/#{@project.token}/tasks" do |f| %>
+    <%= f.text_field :name, class: "span6",  placeholder: "なにする？" %>
+    <div class="controls">
+      <%= f.submit '今日やる', name: 'today', class: 'btn btn-large' %>
+      <%= f.submit '明日やる', name: 'tomorrow', class: 'btn btn-large' %>
+      <%= f.submit 'いつかやる', name: 'someday', class: 'btn btn-large' %>
+    </div>
+  <% end %>
 </div>
-<div  id="todo-list">
-<% {today: @today_tasks, tomorrow: @tomorrow_tasks, someday: @someday_tasks}.each do |type, tasks| -%>
-  <div id="<%= type %>">
-    <h2><%= {today: '今日やる', tomorrow: '明日やる', someday: 'いつかやる'}[type] %></h2>
-    <% tasks.each do | task | -%>
-      <% form_for task, "/#{@project.token}/tasks/#{task.id}", method: :put do |f| %>
-        <% if type == :today -%>
-          <%= f.check_box :done %>
-        <% end -%>
-        <%= task.name %><%= '[ 期限過ぎちゃいました ]' if type == :someday && task.due_date.present? %>
-        <%= link_to '×', "/#{@project.token}/tasks/#{task.id}",
-                        confirm: '削除してよろしいですか？', method: :delete %>
 
-        <% unless type == :today -%><%= f.submit 'move today', name: 'today' %><% end -%>
-        <% unless type == :tomorrow -%><%= f.submit 'move tomorrow', name: 'tomorrow' %><% end -%>
-        <% unless type == :someday -%><%= f.submit 'move someday', name: 'someday' %><% end -%>
-      <% end %>
-    <% end -%>
-  </div>
-<% end -%>
+<div class="row">
+  <% {today: @today_tasks, tomorrow: @tomorrow_tasks, someday: @someday_tasks}.each do |type, tasks| -%>
+    <div id="<%= type %>" class="span4">
+      <h2><%= {today: '今日やる', tomorrow: '明日やる', someday: 'いつかやる'}[type] %></h2>
+      <% tasks.each do | task | -%>
+        <% form_for task, "/#{@project.token}/tasks/#{task.id}", method: :put do |f| %>
+          <div class='well'>
+            <%= link_to '&times;', "/#{@project.token}/tasks/#{task.id}",
+            confirm: '削除してよろしいですか？', method: :delete, class: 'close' %>
+            <div>
+              <% if type == :today -%>
+                <%= f.check_box :done %>
+              <% end -%>
+              <%= task.name %><%= '[ 期限過ぎちゃいました ]' if type == :someday && task.due_date.present? %>
+            </div>
+            <% unless type == :today -%><%= f.submit '今日やる', name: 'today' %><% end -%>
+            <% unless type == :tomorrow -%><%= f.submit '明日やる', name: 'tomorrow' %><% end -%>
+            <% unless type == :someday -%><%= f.submit 'いつかやる', name: 'someday' %><% end -%>
+          </div>
+        <% end %>
+      <% end -%>
+    </div>
+  <% end -%>
 <div>
-<p></p>

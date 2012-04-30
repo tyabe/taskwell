@@ -20,19 +20,14 @@
         <% if tasks.present? -%>
           <% tasks.each do | task | -%>
             <li id="<%=task.id %>" class="ui-state-default">
-            <% form_for task, "/#{@project.token}/tasks/#{task.id}", method: :put do |f| %>
+            <div>
               <%= link_to '&times;', "/#{@project.token}/tasks/#{task.id}",
               confirm: '削除してよろしいですか？', method: :delete, class: 'close' %>
-              <div>
-                <% if type == :today -%>
-                  <%= f.check_box :done %>
-                <% end -%>
-                <%= task.name %><%= '[ 期限過ぎちゃいました ]' if type == :someday && task.due_date.present? %>
-              </div>
-              <% unless type == :today -%><%= f.submit '今日やる', name: 'today' %><% end -%>
-              <% unless type == :tomorrow -%><%= f.submit '明日やる', name: 'tomorrow' %><% end -%>
-              <% unless type == :someday -%><%= f.submit 'いつかやる', name: 'someday' %><% end -%>
-            <% end %>
+              <% if type == :today -%>
+                <%= check_box_tag :done %>
+              <% end -%>
+              <%= task.name %><%= '[ 期限過ぎちゃいました ]' if type == :someday && task.due_date.present? %>
+            </div>
             </li>
           <% end -%>
         <% else -%>
@@ -49,6 +44,7 @@
   <!--
   $(function() {
     $('.tasks').sortable({
+      items: '.ui-state-default',
       placeholder: 'moving',
       opacity: 0.7,
       connectWith: '.tasks',
@@ -58,6 +54,12 @@
         }
       },
       update: function(event, ui){
+        $.ajax({
+          url: '/<%= @project.token %>/sort',
+          type: 'post',
+          data: 'type='+$(this).attr('id')+'&positions='+$(this).sortable('toArray'),
+          dataType: 'script'
+        });
         if($(this).children('div').length > 0) {
           $(this).children().remove('div');
         }
@@ -87,7 +89,7 @@
     cursor: move;
   }
   .moving {
-    height: 4.2em;
+    height: 2.2em;
     border: dotted 2px #0000ff;
   }
   -->

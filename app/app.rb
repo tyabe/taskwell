@@ -74,6 +74,23 @@ class Taskwell < Padrino::Application
     redirect "/#{project.token}"
   end
 
+  post "/:token/sort" do
+    project = Project.find_by_token(params[:token])
+    params['positions'].split(',').each_with_index do |id, index|
+      task = project.tasks.find(id)
+      task.position = index
+      task.due_date = case params['type']
+                      when 'today'
+                        Date.today
+                      when 'tomorrow'
+                        Date.today + 1
+                      else
+                        nil
+                      end
+      task.save
+    end
+  end
+
   ##
   # Caching support
   #

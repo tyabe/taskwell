@@ -15,6 +15,6 @@ class Task < ActiveRecord::Base
   belongs_to :project
 
   # scopes
-  default_scope order('position asc', 'id asc')
+  default_scope order('position asc', 'id desc')
 
 end
